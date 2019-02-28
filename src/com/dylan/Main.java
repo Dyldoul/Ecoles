@@ -4,8 +4,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Menu menu = new Menu();
-        menu.runMenu();
+        Ecoles maitre = new Ecoles();
+        maitre.Menu();
 
 
     }

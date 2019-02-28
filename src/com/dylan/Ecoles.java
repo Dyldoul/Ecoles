@@ -4,13 +4,19 @@ import java.util.*;
 
 public class Ecoles {
 
-    private String nom;
-    private String adresse;
+    private String nomEcole = "Inconnu";
+    private String adresse = "Quelque part";
+
+    private Map<String, String> listEcoles = new HashMap<String, String>();
     private List<String> listClasses = new ArrayList<String>();
     private Map<String, String> listEleves = new HashMap<String, String>();
+
     private int nbrClasses = 0;
     private int nbrEleves = 0;
     private boolean ecoleCreer = false;
+    private boolean classeCreer = false;
+    int choixMenu;
+
     Scanner scan = new Scanner(System.in);
 
     //Constructeur
@@ -19,23 +25,17 @@ public class Ecoles {
     public Ecoles() {
     }
 
-    public Ecoles(String nom, String adresse) {
-        this.nom = nom;
-        this.adresse = adresse;
-    }
-
 
     //Getters et Setters
 
 
-    public String getNom() {
+    public String getNomEcole() {
 
-        return nom;
+        return nomEcole;
     }
 
-    public void setNom(String nom) {
-
-        this.nom = nom;
+    public void setNomEcole(String nomEcole) {
+        this.nomEcole = nomEcole;
     }
 
     public String getAdresse() {
@@ -48,9 +48,6 @@ public class Ecoles {
         this.adresse = adresse;
     }
 
-    public List<String> voirListeClasse() {
-        return listClasses;
-    }
 
     public boolean isEcoleCreer() {
         return ecoleCreer;
@@ -60,21 +57,76 @@ public class Ecoles {
         this.ecoleCreer = ecoleCreer;
     }
 
+    public boolean isClasseCreer() {
+        return classeCreer;
+    }
+
+    public void setClasseCreer(boolean classeCreer) {
+        this.classeCreer = classeCreer;
+    }
+
     //Méthodes
 
-    /**
-     * Affiche les détails de votre écoles
-     */
-    public void voirEcoles(){
-        System.out.println("Votre école "+getNom()+", se trouve a l'adresse suivante : "+getAdresse());
+
+    public void Menu(){
+
+        //Menu de départ a faire au moins une fois
+        do {
+
+            System.out.println("BIENVENUE ! Que voulez-vous faire ? (taper numéro correspondant)");
+            System.out.println("1 - Créer une école");
+            System.out.println("2 - Créer une classe");
+            System.out.println("3 - Enregistrer un élève");
+            System.out.println("4 - Quitter");
+            System.out.println("----------------------------------------------------------------");
+            choixMenu=scan.nextInt();
+
+
+            switch (choixMenu){
+
+                case 1 :
+                    modifierEcole();
+                    break;
+
+                case 2 :
+                    creerClasse();
+                    break;
+
+                case 3:
+                    creerEleve();
+                    break;
+            }
+
+        } while (choixMenu != 4);
+
+
     }
+
+    /**
+     * Créer une nouvelle école
+     */
+    public void modifierEcole(){
+        System.out.println("Quel est le nom de votre Ecole ?");
+        System.out.println();
+        setNomEcole(scan.nextLine());
+        System.out.println();
+        System.out.println("Quel est l'adresse de votre Ecole ?");
+        System.out.println();
+        setAdresse(scan.nextLine());
+        System.out.println();
+        System.out.println("----------------------------------------------------------------");
+        System.out.println("Votre école : "+getNomEcole()+" a l'adresse : "+getAdresse()+" a bien été créer !");
+        listEcoles.put(getNomEcole(),getAdresse());
+        setEcoleCreer(true);
+    }
+
 
     /**
      * Créer une nouvelle classe
      */
-    public void creerClasse(){
+    public void creerClasse() {
 
-        if (isEcoleCreer()){
+        if (isEcoleCreer() == true) {
 
             Classe classe = new Classe();
 
@@ -93,32 +145,32 @@ public class Ecoles {
 
             //Intégration du nom de la classe
 
-            switch (classe.getChoixClasse()){
-                case 1 :
+            switch (classe.getChoixClasse()) {
+                case 1:
                     System.out.println("Vous avez créer une de 6ème");
                     classe.setNomClasse("6ème");
                     break;
-                case 2 :
+                case 2:
                     System.out.println("Vous avez créer une de 5ème");
                     classe.setNomClasse("5ème");
                     break;
-                case 3 :
+                case 3:
                     System.out.println("Vous avez créer une de 4ème");
                     classe.setNomClasse("4ème");
                     break;
-                case 4 :
+                case 4:
                     System.out.println("Vous avez créer une de 3ème");
                     classe.setNomClasse("3ème");
                     break;
-                case 5 :
+                case 5:
                     System.out.println("Vous avez créer une de 2nd");
                     classe.setNomClasse("2nd");
                     break;
-                case 6 :
+                case 6:
                     System.out.println("Vous avez créer une de 1ère");
                     classe.setNomClasse("1ère");
                     break;
-                case 7 :
+                case 7:
                     System.out.println("Vous avez créer une de Terminal");
                     classe.setNomClasse("Terminal");
                     break;
@@ -126,70 +178,93 @@ public class Ecoles {
 
             listClasses.add(classe.getNomClasse());//Ajout du nom de la classe dans la list
             nbrClasses++;//Instancier de 1 le nombre de classe
-        } else {
+            setClasseCreer(true);
+        } else if (isEcoleCreer()==false){
             System.out.println("Vous n'avez pas créer d'école ! Veuillez en créer une !");
+            System.out.println("----------------------------------------------------------------");
         }
+
+    }
+
+
+
+    public void creerEleve() {
+
+        if (isEcoleCreer() == true && isClasseCreer() == true) {
+
+
+            Eleve eleve = new Eleve();
+
+            System.out.println("Quel est le nom de votre nouvel élève ?");
+            eleve.setNomEleve(scan.nextLine());
+
+            int i;
+            System.out.println("Dans quel classe est votre élève ?");
+            System.out.println("1 - 6ème");
+            System.out.println("2 - 5ème");
+            System.out.println("3 - 4ème");
+            System.out.println("4 - 3ème");
+            System.out.println("5 - 2nd");
+            System.out.println("6 - 1ère");
+            System.out.println("7 - Terminal");
+            System.out.println("");
+            i = scan.nextInt();
+            switch (i) {
+                case 1:
+                    System.out.println("Vous avez créer une de 6ème");
+                    eleve.setClasseEleve("6ème");
+                    break;
+                case 2:
+                    System.out.println("Vous avez créer une de 5ème");
+                    eleve.setClasseEleve("5ème");
+                    break;
+                case 3:
+                    System.out.println("Vous avez créer une de 4ème");
+                    eleve.setClasseEleve("4ème");
+                    break;
+                case 4:
+                    System.out.println("Vous avez créer une de 3ème");
+                    eleve.setClasseEleve("3ème");
+                    break;
+                case 5:
+                    System.out.println("Vous avez créer une de 2nd");
+                    eleve.setClasseEleve("2nd");
+                    break;
+                case 6:
+                    System.out.println("Vous avez créer une de 1ère");
+                    eleve.setClasseEleve("1ère");
+                    break;
+                case 7:
+                    System.out.println("Vous avez créer une de Terminal");
+                    eleve.setClasseEleve("Terminal");
+                    break;
+            }
+            System.out.println("------------------------------------------");
+            System.out.println("Votre élève " + eleve.getNomEleve() + " est bien inscrit dans la classe : " + eleve.getClasseEleve());
+            nbrEleves++;
+            listEleves.put(eleve.getNomEleve(), eleve.getClasseEleve());
+
+        } else if (isEcoleCreer() == true && isClasseCreer() == false){
+            System.out.println("Vous avez créer une école mais pas de classe !(Veuillez en créer une)");
+            System.out.println("----------------------------------------------------------------");
+        }else if (isClasseCreer() == false && isEcoleCreer() == false){
+            System.out.println("Vous n'avez ni d'école ni de classe de créer ! (Veuillez en créer !)");
+            System.out.println("----------------------------------------------------------------");
+        }
+    }
+
+    /**
+     * Affiche les détails de votre écoles
+     */
+    public void voirEcoles(){
+        System.out.println("Votre école "+getNomEcole()+", se trouve a l'adresse suivante : "+getAdresse());
+    }
 
     /**
      * Affiche le nombre de classe créer
      */
-    public void combienDeClasses() {
-        System.out.println("Vous avez en ce moment : "+nbrClasses+" classe dans l'école "+getNom());
-    }
-
-    public void creerEleve(){
-
-        Eleve eleve = new Eleve();
-
-        System.out.println("Quel est le nom de votre nouvel élève ?");
-        eleve.setNomEleve(scan.nextLine());
-
-        int i;
-        System.out.println("Dans quel classe est votre élève ?");
-        System.out.println("1 - 6ème");
-        System.out.println("2 - 5ème");
-        System.out.println("3 - 4ème");
-        System.out.println("4 - 3ème");
-        System.out.println("5 - 2nd");
-        System.out.println("6 - 1ère");
-        System.out.println("7 - Terminal");
-        System.out.println("");
-        i = scan.nextInt();
-        switch (i){
-            case 1 :
-                System.out.println("Vous avez créer une de 6ème");
-                eleve.setClasseEleve("6ème");
-                break;
-            case 2 :
-                System.out.println("Vous avez créer une de 5ème");
-                eleve.setClasseEleve("5ème");
-                break;
-            case 3 :
-                System.out.println("Vous avez créer une de 4ème");
-                eleve.setClasseEleve("4ème");
-                break;
-            case 4 :
-                System.out.println("Vous avez créer une de 3ème");
-                eleve.setClasseEleve("3ème");
-                break;
-            case 5 :
-                System.out.println("Vous avez créer une de 2nd");
-                eleve.setClasseEleve("2nd");
-                break;
-            case 6 :
-                System.out.println("Vous avez créer une de 1ère");
-                eleve.setClasseEleve("1ère");
-                break;
-            case 7 :
-                System.out.println("Vous avez créer une de Terminal");
-                eleve.setClasseEleve("Terminal");
-                break;
-        }
-        System.out.println("------------------------------------------");
-        System.out.println("Votre élève "+eleve.getNomEleve()+" est bien inscrit dans la classe : "+eleve.getClasseEleve());
-        nbrEleves++;
-        listEleves.put(eleve.getNomEleve(),eleve.getClasseEleve());
-
+    public void combienDeClasses(){
+        System.out.println("Vous avez en ce moment : "+nbrClasses+" classe dans l'école "+getNomEcole());
     }
 
 
