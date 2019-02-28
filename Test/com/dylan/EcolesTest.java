@@ -11,4 +11,8 @@ class EcolesTest {
     @org.junit.jupiter.api.Test
     void voirEcoles() {
     }
+
+    @org.junit.jupiter.api.Test
+    void creerClasse() {
+    }
 }
