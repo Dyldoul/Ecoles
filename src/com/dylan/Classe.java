@@ -5,6 +5,7 @@ public class Classe{
 
     private String nomClasse;
     private int choixClasse;
+    private boolean classeCreer = false;
 
     public Classe() {
     }
@@ -26,6 +27,14 @@ public class Classe{
 
     public int getChoixClasse() {
         return choixClasse;
+    }
+
+    public boolean isClasseCreer() {
+        return classeCreer;
+    }
+
+    public void setClasseCreer(boolean classeCreer) {
+        this.classeCreer = classeCreer;
     }
 }
 

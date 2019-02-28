@@ -3,6 +3,7 @@ package com.dylan;
 public class Eleve {
     private String nomEleve;
     private String classeEleve;
+    private boolean eleveCreer = false;
 
     public String getNomEleve() {
         return nomEleve;
@@ -18,5 +19,13 @@ public class Eleve {
 
     public void setClasseEleve(String classeEleve) {
         this.classeEleve = classeEleve;
+    }
+
+    public boolean isEleveCreer() {
+        return eleveCreer;
+    }
+
+    public void setEleveCreer(boolean eleveCreer) {
+        this.eleveCreer = eleveCreer;
     }
 }
